@@ -76,4 +76,14 @@
 #define GET_BIT GET_BITS
 #define TST_BIT TST_BITS
 
+#ifndef CHAR_BIT
+#define CHAR_BIT 8
+#endif
+
+#define MSB(x) (sizeof(x)*CHAR_BIT-1)
+#define LSB(x) 0
+
+#define MSBV(x) BV(MSB(x))
+#define LSBV(x) BV(LSB(x))
+
 #endif /* _BITS_H_ */

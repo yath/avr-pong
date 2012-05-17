@@ -20,26 +20,34 @@ struct {
 
 typedef uint16_t paddle_t;
 
+#define PADDLE_TOP_BIT MSB(paddle_t)
+#define PADDLE_BOT_BIT LSB(paddle_t)
+#define PADDLE_TOP_BITV BV(PADDLE_TOP_BIT)
+#define PADDLE_BOT_BITV BV(PADDLE_BOT_BIT)
+
 #define PADDLE_POS_P1 (1<<4) /* leftmost */
 #define PADDLE_POS_P2 (1)    /* rightmost */
 
+#define PADDLE_LEN 5
+#define PADDLE_LEN_BITS ((1<<PADDLE_LEN)-1)
+
 /* MSB is top of screen */
-paddle_t paddle_p1 = 0x0f00,
-         paddle_p2 = 0x00f0;
+paddle_t paddle_p1 = PADDLE_LEN_BITS<<3,
+         paddle_p2 = PADDLE_LEN_BITS<<5;
 
 void cgaddr(uint8_t c) {
     lcd_command(BV(LCD_CGRAM)|c);
 }
 
 void paddle_up(paddle_t *paddle) {
-    if (*paddle & BV(15))
+    if (*paddle & PADDLE_TOP_BITV)
         return;
     *paddle <<= 1;
     draw_paddles();
 }
 
 void paddle_down(paddle_t *paddle) {
-    if (*paddle & BV(0))
+    if (*paddle & PADDLE_BOT_BITV)
         return;
     *paddle >>= 1;
     draw_paddles();
@@ -57,9 +65,9 @@ void draw_paddles(void) {
     lcd_gotoxy(LCD_DISP_LENGTH-1, 1);
     lcd_data(3);
     cgaddr(0);
-    for (int i = 15; i >= 0; i--)
+    for (int i = PADDLE_TOP_BIT; i >= PADDLE_BOT_BIT; i--)
         lcd_data(paddle_p1 & BV(i) ? PADDLE_POS_P1 : 0);
-    for (int i = 15; i >= 0; i--)
+    for (int i = PADDLE_TOP_BIT; i >= PADDLE_BOT_BIT; i--)
         lcd_data(paddle_p2 & BV(i) ? PADDLE_POS_P2 : 0);
 }
 
