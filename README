@@ -1,1 +1,7 @@
 Pong for the ATMega8 just to experiment around with HD44780.
+
+To build Pong you will need the 'common' submodule; just do
+ $ git submodule init
+ $ git submodule update
+ $
+to clone it into the right place.
