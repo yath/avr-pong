@@ -31,36 +31,17 @@ void cgaddr(uint8_t c) {
     lcd_command(BV(LCD_CGRAM)|c);
 }
 
-static inline int find_first_bit(int val, int direction) {
-    int from, to;
-    if (direction == 1) {
-        from = 15; to = 0;
-    } else if (direction == -1) {
-        from = 0; to = 15;
-    } else {
-        return -1;
-    }
-    for (int i = from; i != to; i += direction)
-        if (val & BV(i))
-            return i;
-    return -1;
-}
-
 void paddle_up(paddle_t *paddle) {
-    int toppos = find_first_bit(*paddle, -1);
-    if (toppos == 15)
-        return; // can't move upwards
-    SET_BIT(*paddle, toppos+1);
-    CLR_BIT(*paddle, find_first_bit(*paddle, 1));
+    if (*paddle & BV(15))
+        return;
+    *paddle <<= 1;
     draw_paddles();
 }
 
 void paddle_down(paddle_t *paddle) {
-    int botpos = find_first_bit(*paddle, 1);
-    if (botpos == 0)
-        return; // can't move downwards
-    SET_BIT(*paddle, botpos-1);
-    CLR_BIT(*paddle, find_first_bit(*paddle, -1));
+    if (*paddle & BV(0))
+        return;
+    *paddle >>= 1;
     draw_paddles();
 }
 
