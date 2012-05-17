@@ -129,11 +129,11 @@ void gameover(int winner) {
     lcd_clrscr();
     lcd_gotoxy(0, 0);
               /*0123456789ABCDEF */
-    lcd_puts_P("   GAME OVER!");
+    lcd_puts_P(PSTR("   GAME OVER!"));
     lcd_gotoxy(2, 1);
-    lcd_puts_P("Player ");
+    lcd_puts_P(PSTR("Player "));
     lcd_data(winner+'0');
-    lcd_puts_P(" won");
+    lcd_puts_P(PSTR(" won"));
     _delay_ms(2000);
     new_game();
 }

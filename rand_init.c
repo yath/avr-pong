@@ -10,7 +10,7 @@ ISR(TIMER0_OVF_vect) {
 
 void rand_init(void) {
     lcd_gotoxy(0, 0);
-    lcd_puts_P("Init PRNG: ");
+    lcd_puts_P(PSTR("Init PRNG: "));
     SET_BIT(TIMSK, TOIE0);
     SET_BIT(TCCR0, CS00);
     sei();
