@@ -32,7 +32,7 @@ SRC = main.c lcd.c rand.c
 #    -ahlms:  create assembler listing
 CFLAGS = -g -O$(OPT) \
 -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums \
--W -Wall -Wextra -Wstrict-prototypes \
+-W -Wall -Wextra -Wstrict-prototypes -Werror \
 -DF_CPU=$(F_CPU) \
 -Wa,-adhlns=$(<:.c=.lst) \
 #-DDEBUG=0 \
