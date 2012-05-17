@@ -39,20 +39,6 @@ void cgaddr(uint8_t c) {
     lcd_command(BV(LCD_CGRAM)|c);
 }
 
-void paddle_up(paddle_t *paddle) {
-    if (*paddle & PADDLE_TOP_BITV)
-        return;
-    *paddle <<= 1;
-    draw_paddles();
-}
-
-void paddle_down(paddle_t *paddle) {
-    if (*paddle & PADDLE_BOT_BITV)
-        return;
-    *paddle >>= 1;
-    draw_paddles();
-}
-
 void draw_paddles(void) {
     /* user-defined characters 00-01 are paddle p1,
      * 02-03 paddle p2 */
@@ -71,6 +57,19 @@ void draw_paddles(void) {
         lcd_data(paddle_p2 & BV(i) ? PADDLE_POS_P2 : 0);
 }
 
+void paddle_up(paddle_t *paddle) {
+    if (*paddle & PADDLE_TOP_BITV)
+        return;
+    *paddle <<= 1;
+    draw_paddles();
+}
+
+void paddle_down(paddle_t *paddle) {
+    if (*paddle & PADDLE_BOT_BITV)
+        return;
+    *paddle >>= 1;
+    draw_paddles();
+}
 
 int main(void) {
     lcd_init(LCD_DISP_ON);
