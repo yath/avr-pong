@@ -7,7 +7,7 @@ AVR_COMMON_API = 1
 WITH_UART  = 1
 WITH_RAND  = 1
 WITH_LCD   = 1
-DEBUG	   = 1
+DEBUG	   = 0
 
 SRC = main.c rand_init.c
 include common/common.mk
