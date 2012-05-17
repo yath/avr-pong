@@ -32,8 +32,7 @@ typedef uint16_t paddle_t;
 #define PADDLE_LEN_BITS ((1<<PADDLE_LEN)-1)
 
 /* MSB is top of screen */
-paddle_t paddle_p1 = PADDLE_LEN_BITS<<3,
-         paddle_p2 = PADDLE_LEN_BITS<<5;
+paddle_t paddle_p1, paddle_p2;
 
 void cgaddr(uint8_t c) {
     lcd_command(BV(LCD_CGRAM)|c);
@@ -71,9 +70,19 @@ void paddle_down(paddle_t *paddle) {
     draw_paddles();
 }
 
+void init_game(void) {
+    /* Random paddle position */
+    paddle_p1 = PADDLE_LEN_BITS <<
+        (rand() % (PADDLE_TOP_BIT-PADDLE_LEN));
+    paddle_p2 = paddle_p1;
+    paddle_p2 = PADDLE_LEN_BITS <<
+        (rand() % (PADDLE_TOP_BIT-PADDLE_LEN));
+}
+
 int main(void) {
     lcd_init(LCD_DISP_ON);
     rand_init();
+    init_game();
     draw_paddles();
 
     while(1) {
