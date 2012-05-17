@@ -1,11 +1,8 @@
 #include <util/delay.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include "uart.h"
-#include "debug.h"
-#include "bits.h"
-#include "lcd.h"
-#include "rand.h"
+#include "common/common.h"
+#include "rand_init.h"
 
 #define BALL_LEFT BV(1)
 #define BALL_UP   BV(0)           /*   .-  1 = left, 0 = right */
