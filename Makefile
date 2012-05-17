@@ -14,7 +14,7 @@ NA_CODE = 1
 OPT = s
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC = main.c lcd.c rand.c
+SRC = main.c lcd.c rand.c uart.c debug.c
 
 # List Assembler source files here.
 # Make them always end in a capital .S.  Files ending in a lowercase .s
@@ -33,7 +33,7 @@ SRC = main.c lcd.c rand.c
 CFLAGS = -g -O$(OPT) \
 -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums \
 -W -Wall -Wextra -Wstrict-prototypes -Werror \
--DF_CPU=$(F_CPU) \
+-DF_CPU=$(F_CPU) -DNDEBUG \
 -Wa,-adhlns=$(<:.c=.lst) \
 #-DDEBUG=0 \
 $(patsubst %,-I%,$(EXTRAINCDIRS))
