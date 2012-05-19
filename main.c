@@ -73,14 +73,14 @@ void draw_paddles(void) {
     if (ball.x < LCD_CHAR_WIDTH) { /* draw ball left */
         bline = PADDLE_TOP_BIT-ball.y;
         bbit  = BV(LCD_CHAR_WIDTH-ball.x);
-        DEBUG("bbit line %d left: %d", bline, bbit);
+        debug("bbit line %d left: %d", bline, bbit);
     }
     for (int i = PADDLE_TOP_BIT; i >= PADDLE_BOT_BIT; i--)
         lcd_data((paddle_p1 & BV(i) ? PADDLE_POS_P1 : 0) | (i == bline ? bbit : 0));
     if (ball.x > BALL_MAX_X-LCD_CHAR_WIDTH) { /* draw ball right */
         bline = PADDLE_TOP_BIT-ball.y;
         bbit  = BV(BALL_MAX_X-ball.x);
-        DEBUG("bbit line %d right: %d", bline, bbit);
+        debug("bbit line %d right: %d", bline, bbit);
     } else
         bline = -1;
     for (int i = PADDLE_TOP_BIT; i >= PADDLE_BOT_BIT; i--)
@@ -102,7 +102,7 @@ void paddle_down(paddle_t *paddle) {
 }
 
 void new_game(void) {
-    DEBUG("Starting new game, random seed = 0x%02x", rand());
+    debug("Starting new game, random seed = 0x%02x", rand());
     /* Random paddle position */
     paddle_p1 = PADDLE_LEN_BITS <<
         (rand() % (PADDLE_TOP_BIT-PADDLE_LEN));
@@ -115,8 +115,8 @@ void new_game(void) {
     ball.y = rand() % (BALL_MAX_Y-10)+5;
     ball.dir = rand()%4;
 
-    DEBUG("paddle_p1 = 0x%02x, paddle_p2 = 0x%02x", paddle_p1, paddle_p2);
-    DEBUG("ball.x = %d, .y = %d, .dir = %d", ball.x, ball.y, ball.dir);
+    debug("paddle_p1 = 0x%02x, paddle_p2 = 0x%02x", paddle_p1, paddle_p2);
+    debug("ball.x = %d, .y = %d, .dir = %d", ball.x, ball.y, ball.dir);
     lcd_clrscr();
     /* clear ball */
     cgaddr(BALL_CGADDR);
@@ -174,7 +174,7 @@ int move_ball(void) {
             }
         }
     }
-    DEBUG("move ball from %d,%d to %d,%d (bounce %d)", ball.x, ball.y,
+    debug("move ball from %d,%d to %d,%d (bounce %d)", ball.x, ball.y,
         newx, newy, bounce);
     if (bounce)
         ball.dir ^= bounce;
