@@ -229,7 +229,6 @@ void move_and_draw_ball(void) {
     }
 }
 
-
 int main(void) {
     uart_init();
     debug_init();
@@ -241,7 +240,7 @@ int main(void) {
     int i = 0;
 
     while(1) {
-        _delay_ms(DEBUGGING ? 10 : 50);
+        _delay_ms(DEBUGGING ? 100 : 500);
         move_and_draw_ball();
         if (++i == 4) {
             i = 0;
