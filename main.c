@@ -56,6 +56,9 @@ void cgaddr(uint8_t c) {
     lcd_command(BV(LCD_CGRAM)|c);
 }
 
+#undef DEBUG
+#define DEBUG(...)
+
 void draw_paddles(void) {
     /* user-defined characters 00-01 are paddle p1,
      * 02-03 paddle p2 */
@@ -73,14 +76,14 @@ void draw_paddles(void) {
     if (ball.x < LCD_CHAR_WIDTH) { /* draw ball left */
         bline = PADDLE_TOP_BIT-ball.y;
         bbit  = BV(LCD_CHAR_WIDTH-ball.x);
-        DEBUG("bbit line %d left: %d", bline, bbit);
+        debug(C("bbit line "), d(bline), C(" left: "), d(bbit));
     }
     for (int i = PADDLE_TOP_BIT; i >= PADDLE_BOT_BIT; i--)
         lcd_data((paddle_p1 & BV(i) ? PADDLE_POS_P1 : 0) | (i == bline ? bbit : 0));
     if (ball.x > BALL_MAX_X-LCD_CHAR_WIDTH) { /* draw ball right */
         bline = PADDLE_TOP_BIT-ball.y;
         bbit  = BV(BALL_MAX_X-ball.x);
-        DEBUG("bbit line %d right: %d", bline, bbit);
+        debug(C("bbit line "), d(bline), C(" left: "), d(bbit));
     } else
         bline = -1;
     for (int i = PADDLE_TOP_BIT; i >= PADDLE_BOT_BIT; i--)
@@ -102,7 +105,7 @@ void paddle_down(paddle_t *paddle) {
 }
 
 void new_game(void) {
-    DEBUG("Starting new game, random seed = 0x%02x", rand());
+    debug(C("Starting new game, random seed = "), x(rand()));
     /* Random paddle position */
     paddle_p1 = PADDLE_LEN_BITS <<
         (rand() % (PADDLE_TOP_BIT-PADDLE_LEN));
@@ -115,8 +118,8 @@ void new_game(void) {
     ball.y = rand() % (BALL_MAX_Y-10)+5;
     ball.dir = rand()%4;
 
-    DEBUG("paddle_p1 = 0x%02x, paddle_p2 = 0x%02x", paddle_p1, paddle_p2);
-    DEBUG("ball.x = %d, .y = %d, .dir = %d", ball.x, ball.y, ball.dir);
+    debug(C("paddle_p1 = "), x(paddle_p1), C(", paddle_p2 = "), x(paddle_p2));
+    debug(C("ball.x = "), d(ball.x), C(", .y = "), d(ball.y), C(", .dir = "), x(ball.dir));
     lcd_clrscr();
     /* clear ball */
     cgaddr(BALL_CGADDR);
@@ -174,8 +177,8 @@ int move_ball(void) {
             }
         }
     }
-    DEBUG("move ball from %d,%d to %d,%d (bounce %d)", ball.x, ball.y,
-        newx, newy, bounce);
+    debug(C("move ball from "), d(ball.x), c(','), d(ball.y), C(" to "),
+        d(newx), c(','), d(newy), C(" (bounce "), d(bounce), C(")"));
     if (bounce)
         ball.dir ^= bounce;
     ball.x = newx;
@@ -241,7 +244,7 @@ int main(void) {
     int i = 0;
 
     while(1) {
-        _delay_ms(DEBUGGING ? 10 : 50);
+        _delay_ms(50);
         move_and_draw_ball();
         if (++i == 4) {
             i = 0;
